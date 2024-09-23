@@ -1,0 +1,129 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "ZoeDepth"
+version = "0.0.0"
+license = "Proprietary"
+authors = [
+  "A. Random Developer <author@festo.com>",
+]
+maintainers = [
+  "A. Random Developer <author@festo.com>",
+]
+description = "Fork from original project, add a pyproject.toml"
+
+
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+# cuda=">=11.7.1"
+h5py=">=3.7.0"
+# hdf5="*"
+matplotlib=">=3.6.2"
+numpy=">=1.24.1"
+opencv-python=">=4.6.0"
+pip=">=22.3.1"
+torch=">=1.13.1"
+scipy=">=1.10.0"
+torchaudio=">=0.13.1"
+torchvision=">=0.14.1"
+huggingface-hub=">=0.11.1"
+timm=">=0.6.12"
+tqdm=">=4.64.1"
+wandb=">=0.13.9"
+
+[tool.poetry.group.dev]
+optional = true
+[tool.poetry.group.dev.dependencies]
+ruff="*"
+
+
+
+
+[tool.ruff]
+line-length = 120
+fix = true
+
+
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "D", "I", "PT", "NPY", "COM"]
+ignore = [
+    "ANN101", # missing-type-self
+    "C901",   # mccabe complexity
+    "PT003",  # pytest-extraneous-scope-function - on some functions we make this intentionally explicit for
+    # clarity purposess
+    "PT004",   # pytest fixture naming convention that we do not use here
+    "F821",    # disabled pending better integration for omni packages
+    "ANN401",  # at the moment a lot of these annotations are necessary due to missing upstream typing support,
+    "D100",    # not enforced pending decision on documentation requirements
+    "D104",    # not enforced pending decision on documentation requirements
+    "D401",    # Do not enforce first word being in impertative
+    "D211",
+    "D213",
+    "TRY003",  # raise-vanilla-args
+    "PLR0913", # too-many-function-args
+    "PLC1901", # compare-to-empty string
+    "TRY300",  #
+
+    "D105",   # undocumented-magic-method
+    "RET505", # superfluous-else-return
+    "RET506", # superfluous-else-raise
+    "RET507", # superfluous-else-continue
+    "RET508", # superfluous-else-break
+]
+
+
+
+[tool.ruff.format]
+
+
+
+[tool.sphinx-pyproject]
+copyright = "2024, Festo SE & Co. KG"
+today_fmt = "%Y-%m-%d %H:%M:%S"
+language = "en"
+
+templates_path = ["docs/_templates"]
+html_theme = "sphinx_rtd_theme"
+html_show_sourcelink = true
+
+exclude_patterns = [".git", "build", "dist", "Thumbs.db", ".DS_Store", ".venv"]
+source_suffix = ['.rst', '.md']
+extensions = ["myst_parser", "autoapi.extension", "sphinx_rtd_theme"]
+autoapi_type = "python"
+autoapi_dirs = ["../experiment_with_zoe_depth"]
+autoapi_options = [
+    "members",
+    "undoc-members",
+    "show-inheritance",
+    "show-module-summary",
+    "special-members",
+    "imported-members",
+]
+autoapi_python_class_content = "both"
+autoapi_member_order = "groupwise"
+skip-magic-trailing-comma = false
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",
+    "D",
+    "PT018",
+    "SIM223",  # both to support assert False and "Infotext" assertions for assert clarity
+    "ANN201",  # missing-return-type-undocumented-public-function
+    "SLF001",  # private-member-access
+    "ANN202",  # missing-return-type-private-function
+    "PLR2004", # magic-value-comparison
+]
+"setup.py" = ["ALL"]
+# temporarily excludes conftest.py file from linting due to autofix incompatibilities
+"conftest.py" = ["ALL"]
+
